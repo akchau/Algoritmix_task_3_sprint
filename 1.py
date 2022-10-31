@@ -1,3 +1,6 @@
+"""id = 73439610."""
+
+
 def broken_search(nums, target) -> int:
     right = len(nums)
     left = 0
