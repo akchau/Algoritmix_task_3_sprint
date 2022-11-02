@@ -1,4 +1,4 @@
-"""id = 73678425."""
+"""id = 73689835."""
 
 
 class User:
@@ -10,50 +10,47 @@ class User:
     def __lt__(self, other):
         if int(self.tasks) > int(other.tasks):
             return True
-        if int(self.tasks) < int(other.tasks):
-            return False
-        if int(self.tasks) == int(other.tasks):
-            if int(self.fine) > int(other.fine):
-                return False
-            if int(self.fine) == int(other.fine):
-                if self.name > other.name:
-                    return False
-                if self.name == other.name:
-                    return False
-                if self.name < other.name:
-                    return True
+        elif int(self.tasks) == int(other.tasks):
             if int(self.fine) < int(other.fine):
                 return True
+            elif int(self.fine) == int(other.fine):
+                if self.name < other.name:
+                    return True
+        return False
 
     def __str__(self):
         return self.name
 
 
-def partition(array, low, high):
-    i = low - 1
-    pivot = array[high]
-    for j in range(low, high):
-        if array[j].__lt__(pivot):
-            i += 1
-            array[i], array[j], = array[j], array[i]
-    array[i+1], array[high] = array[high], array[i+1]
-    return i + 1
+def quicksort_inplace(array, left, right):
+    if left >= right:
+        return
+    left_idx = left
+    right_idx = right
+
+    pivot_idx = (left + right) // 2
+    pivot = array[pivot_idx]
+    while left_idx < right_idx:
+        while array[left_idx].__lt__(pivot):
+            left_idx += 1
+        while pivot.__lt__(array[right_idx]):
+            right_idx -= 1
+        if left_idx <= right_idx:
+            array[left_idx], array[right_idx] = array[right_idx], array[left_idx]
+            left_idx += 1
+            right_idx -= 1
+    quicksort_inplace(array, left, right_idx)
+    quicksort_inplace(array, left_idx, right)
 
 
-def quicksort_inplace(a, low=0, high=None):
-    if high is None:
-        high = len(a)-1
-    if low < high:
-        pivot_index = partition(a, low, high)
-        quicksort_inplace(a, low, pivot_index - 1)
-        quicksort_inplace(a, pivot_index + 1, high)
-
-
-if __name__ == "__main__":
+def main():
     user_num = int(input())
     user = [
         User(*input().split()) for _ in range(user_num)
     ]
-    quicksort_inplace(user)
-    i = 0
+    quicksort_inplace(user, 0, user_num - 1)
     print(*user, sep='\n')
+
+
+if __name__ == '__main__':
+    main()
