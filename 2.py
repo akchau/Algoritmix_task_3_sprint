@@ -1,30 +1,39 @@
-"""id = 73516132."""
+"""id = 73678425."""
 
 
-def comparator(element, pivot):
-    if int(element[1]) < int(pivot[1]):
-        return True
-    if int(element[1]) > int(pivot[1]):
-        return False
-    if int(element[1]) == int(pivot[1]):
-        if int(element[2]) < int(pivot[2]):
-            return False
-        if int(element[2]) == int(pivot[2]):
-            if element[0] < pivot[0]:
-                return False
-            if element[0] == pivot[0]:
-                return True
-            if element[0] > pivot[0]:
-                return True
-        if int(element[2]) > int(pivot[2]):
+class User:
+    def __init__(self, name, tasks, fine):
+        self.name = name
+        self.tasks = tasks
+        self.fine = fine
+
+    def __lt__(self, other):
+        if int(self.tasks) > int(other.tasks):
             return True
+        if int(self.tasks) < int(other.tasks):
+            return False
+        if int(self.tasks) == int(other.tasks):
+            if int(self.fine) > int(other.fine):
+                return False
+            if int(self.fine) == int(other.fine):
+                if self.name > other.name:
+                    return False
+                if self.name == other.name:
+                    return False
+                if self.name < other.name:
+                    return True
+            if int(self.fine) < int(other.fine):
+                return True
+
+    def __str__(self):
+        return self.name
 
 
 def partition(array, low, high):
     i = low - 1
     pivot = array[high]
     for j in range(low, high):
-        if not comparator(array[j], pivot):
+        if array[j].__lt__(pivot):
             i += 1
             array[i], array[j], = array[j], array[i]
     array[i+1], array[high] = array[high], array[i+1]
@@ -40,11 +49,11 @@ def quicksort_inplace(a, low=0, high=None):
         quicksort_inplace(a, pivot_index + 1, high)
 
 
-user_num = int(input())
-user = []
-for i in range(user_num):
-    user.append([x for x in input().split()])
-quicksort_inplace(user)
-i = 0
-for element in user:
-    print(element[0])
+if __name__ == "__main__":
+    user_num = int(input())
+    user = [
+        User(*input().split()) for _ in range(user_num)
+    ]
+    quicksort_inplace(user)
+    i = 0
+    print(*user, sep='\n')
