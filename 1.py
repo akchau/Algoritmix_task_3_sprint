@@ -5,14 +5,9 @@ def broken_search(nums, target) -> int:
     right = len(nums)-1
     left = 0
     first = nums[0]
-    mid = (right + left) // 2
     if first == target:
         return 0
-    while right - left >= 1:
-        if nums[left] == target:
-            return left
-        if nums[right] == target:
-            return right
+    while right >= left:
         mid = (right + left) // 2
         if nums[mid] == target:
             return mid
